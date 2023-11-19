@@ -2,16 +2,6 @@ import serial
 import csv
 import time
 
-# Establish a connection to the Arduino using the specified port
-# Replace 'COM3' with your Arduino port
-ser = serial.Serial('COM3', 9600)
-
-# Open the CSV file in write mode
-# Replace 'results.csv' with your desired filename
-
-
-# Global variable to track the incremental ID
-
 
 def count_csv_lines(file_path):
     line_count = 0
@@ -43,10 +33,6 @@ def save_data_to_csv(id_ubi, co2, temperature, humidity, timestamp):
     csv_file.close()
 
 
-# Get the start time
-start_time = time.time()
-
-# Main loop to read data from Arduino and save it in the CSV file for 60 seconds
 
 
 def extract_last_element(csv_file_path):
@@ -59,8 +45,16 @@ def extract_last_element(csv_file_path):
         if (last_element == None):
             return 1
         return last_element
+    
 
 
+# Establish a connection to the Arduino using the specified port
+# Replace 'COM3' with your Arduino port
+ser = serial.Serial('COM3', 9600)
+
+
+# Get the start time
+start_time = time.time()
 id_ubi = extract_last_element("results.csv")
 
 while time.time() - start_time <= 60:
@@ -77,7 +71,7 @@ while time.time() - start_time <= 60:
         # Call the save_data_to_csv function to save the data
         last_ubi = int(id_ubi)+1
         save_data_to_csv(f"{str(last_ubi)}", co2,
-                         temperature, humidity, timestamp)
+                        temperature, humidity, timestamp)
 
         # Print the data and time for debugging
         print(
